@@ -10,6 +10,7 @@ class MyCard extends StatelessWidget {
         backgroundColor: Colors.blue,
         body: SafeArea(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircleAvatar(
                 radius: 50.0,
@@ -32,27 +33,47 @@ class MyCard extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              Container(
+              SizedBox(
+                height: 20.0,
+                width: 150.0,
+                child: Divider(color: Colors.blue.shade100),
+              ),
+              Card(
                 color: Colors.white,
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                children: <Widget>[
-                  Icon(
+                child: ListTile(
+                  leading: Icon(
                     Icons.phone,
                     color: Colors.blue,
                   ),
-                  SizedBox(width: 10.0),
-                  Text(
-                    '+91 9205135680',
+                  title: Text(
+                    '+91 9205 135 680',
                     style: TextStyle(
                       color: Colors.blue.shade900,
                       fontFamily: 'FiraSansCond',
                       fontSize: 20.0,
                     ),
-                  )
-                ]
-              ),),
+                  ),
+                ),
+              ),
+              Card(
+                color: Colors.white,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.email,
+                    color: Colors.blue,
+                  ),
+                  title: Text(
+                    'anand.kumar@live.in',
+                    style: TextStyle(
+                      color: Colors.blue.shade900,
+                      fontFamily: 'FiraSansCond',
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
