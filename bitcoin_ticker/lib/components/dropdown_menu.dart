@@ -13,7 +13,7 @@ class DropdownMenu extends StatefulWidget {
 }
 
 class _DropdownMenuState extends State<DropdownMenu> {
-  String selectedCurrency = 'USD';
+  String selectedCurrency = 'AUD';
 
 androidDropDown() {
   List<DropdownMenuItem<String>> dropdownItems = [];

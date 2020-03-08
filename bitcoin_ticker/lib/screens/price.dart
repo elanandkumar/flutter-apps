@@ -1,3 +1,4 @@
+import 'package:bitcoin_ticker/components/crypto_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bitcoin_ticker/data/coin.dart';
 import 'package:bitcoin_ticker/components/dropdown_menu.dart';
@@ -10,6 +11,30 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+  String selectedCurrency = 'AUD';
+  Map<String, String> coinValues = {};
+  bool isWaiting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getExchangeData();
+  }
+
+  void getExchangeData() async {
+    isWaiting =  true;
+    try {
+      var data = await coinData.getCoinData(selectedCurrency);
+      isWaiting = false;
+
+      setState(() {
+        coinValues = data;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,21 +45,26 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.teal,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                child: Text(
-                  '1 BTC = ? USD',
-                  textAlign: TextAlign.center,
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                CryptoCard(
+                  cryptoCurrency: 'BTC',
+                  value: isWaiting ? '?' : coinValues['BTC'],
+                  selectedCurrency: selectedCurrency
                 ),
-              ),
+                CryptoCard(
+                  cryptoCurrency: 'ETH',
+                  value: isWaiting ? '?' : coinValues['ETH'],
+                  selectedCurrency: selectedCurrency
+                ),
+                CryptoCard(
+                  cryptoCurrency: 'LTC',
+                  value: isWaiting ? '?' : coinValues['LTC'],
+                  selectedCurrency: selectedCurrency
+                ),
+              ],
             ),
           ),
           Container(
@@ -42,9 +72,12 @@ class _PriceScreenState extends State<PriceScreen> {
             color: Colors.teal,
             alignment: Alignment.center,
             child: DropdownMenu(
-              data: coinData.getCurrencies(),
+              data: currenciesList,
               handleOnChange: (value) {
-                print(value);
+                setState(() {
+                  selectedCurrency = value;
+                  getExchangeData();
+                });
               },
             ),
           ),
