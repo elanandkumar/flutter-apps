@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "841373462894",
+    "firebase_url": "https://lightening-chat.firebaseio.com",
+    "project_id": "lightening-chat",
+    "storage_bucket": "lightening-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841373462894:android:f3aff9bf1c6ad8839b517f",
+        "android_client_info": {
+          "package_name": "com.elanandkumar.lightening_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841373462894-fhrrgs0s374hfv5p5q1ebm62qfk133al.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt2Tprf7_CrO8efq5A920KNjKWhCMomj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841373462894-fhrrgs0s374hfv5p5q1ebm62qfk133al.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

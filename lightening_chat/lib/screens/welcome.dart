@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:lightening_chat/components/rounded_button.dart';
 import 'package:lightening_chat/screens/login.dart';
 import 'package:lightening_chat/screens/registration.dart';
 
@@ -44,7 +46,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
     controller.addListener(() {
       setState(() {});
-      print(controller.value);
+      print(animation.value);
     });
   }
 
@@ -57,10 +59,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lightening Chat'),
-        backgroundColor: Colors.orange.shade700,
-      ),
       backgroundColor: animation.value,
       body: SafeArea(
         child: Column(
@@ -69,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(bottom: 80.0),
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
@@ -83,60 +81,37 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       ),
                     ),
                   ),
-                  Text(
-                    'Lightening Chat',
-                    style: TextStyle(
-                      fontSize: 45.0,
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  TypewriterAnimatedTextKit(
+                      isRepeatingAnimation: false,
+                      speed: Duration(milliseconds: 500),
+                      text: ['Lightening Chat'],
+                      textStyle: TextStyle(
+                        fontSize: 40.0,
+                        color: Colors.grey.shade700,
+                        fontWeight: FontWeight.bold,
+                      )),
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 8, 20, 16),
-              child: SizedBox(
-                height: 50.0,
-                child: RaisedButton(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  color: Colors.green,
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                ),
-              ),
+            RoundedButton(
+              label: 'Log In',
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  LoginScreen.id,
+                );
+              },
+              backgroundColor: Colors.blue,
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: SizedBox(
-                height: 50.0,
-                child: RaisedButton(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  color: Colors.blueAccent,
-                  child: Text(
-                    'Register',
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      RegistrationScreen.id,
-                    );
-                  },
-                ),
-              ),
+            RoundedButton(
+              label: 'Register',
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  RegistrationScreen.id,
+                );
+              },
+              backgroundColor: Colors.blue,
             ),
           ],
         ),

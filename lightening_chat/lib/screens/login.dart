@@ -1,121 +1,103 @@
 import "package:flutter/material.dart";
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:lightening_chat/components/rounded_button.dart';
+import 'package:lightening_chat/screens/chat.dart';
+import 'package:lightening_chat/constants.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool showSpinner = false;
+  String email;
+  String password;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Login'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Hero(
-              tag: 'logo',
-              child: Icon(
-                Icons.flash_on,
-                color: Colors.orange,
-                size: 65.0,
-              ),
-            ),
-            SizedBox(
-              height: 48.0,
-            ),
-            TextField(
-              style: TextStyle(color: Colors.black),
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                hintText: 'Enter your email',
-                hintStyle: TextStyle(color: Colors.grey),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 20.0,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.lightGreenAccent.shade700,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Colors.lightGreenAccent.shade700, width: 2.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Icon(
+                    Icons.flash_on,
+                    color: Colors.orange,
+                    size: 65.0,
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              style: TextStyle(color: Colors.black),
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                hintText: 'Enter your password',
-                hintStyle: TextStyle(color: Colors.grey),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 20.0,
+              Flexible(
+                child: SizedBox(
+                  height: 48.0,
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.lightGreenAccent.shade700,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Colors.lightGreenAccent.shade700, width: 2.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                child: TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black),
+                  onChanged: (value) {
+                    email = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter Your Email',
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 24.0),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.green,
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {},
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(fontSize: 20.0),
+              SizedBox(
+                height: 8.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                child: TextField(
+                  obscureText: true,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black),
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter Your Password',
                   ),
                 ),
               ),
-            ),
-          ],
+              Flexible(child: SizedBox(height: 24.0)),
+              RoundedButton(
+                label: 'Log In',
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true;
+                  });
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: email.trim(), password: password);
+                    if (user != null) {
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+                    setState(() {
+                      showSpinner = false;
+                    });
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                backgroundColor: Colors.blue,
+              ),
+            ],
+          ),
         ),
       ),
     );
