@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get_things_done/widgets/TasksList.dart';
+import 'package:provider/provider.dart';
+import 'package:get_things_done/widgets/tasks-list.dart';
 import 'package:get_things_done/screens/add-tasks.dart';
-import 'package:get_things_done/models/Task.dart';
+import 'package:get_things_done/models/task-store.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'hello one'),
-    Task(name: 'hello two'),
-    Task(name: 'hello three'),
-  ];
-
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final tasksStore = Provider.of<TaskStore>(context);
+
     return Scaffold(
       backgroundColor: Color(0xFF1A3532),
       body: Column(
@@ -48,7 +40,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 Text(
-                  '${tasks.length} Tasks',
+                  '${tasksStore.taskCount} Tasks',
                   style: TextStyle(
                     color: Color(0xFF9FBDBC),
                     fontSize: 16.0,
@@ -67,7 +59,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: TasksList(tasks),
+              child: TasksList(),
             ),
           ),
         ],
@@ -87,16 +79,7 @@ class _TasksScreenState extends State<TasksScreen> {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTasksScreen(
-                  onPressed: (newTask) {
-                    setState(() {
-                      tasks.add(
-                        Task(name: newTask)
-                      );
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
+                child: AddTasksScreen(),
               ),
             ),
           );

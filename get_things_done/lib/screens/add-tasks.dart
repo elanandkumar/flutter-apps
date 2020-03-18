@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:get_things_done/models/task-store.dart';
 
 class AddTasksScreen extends StatelessWidget {
-  final Function onPressed;
-
-  AddTasksScreen({this.onPressed});
-
   @override
   Widget build(BuildContext context) {
-    String taskTitle;
+    String newTaskTitle;
+    final taskStore = Provider.of<TaskStore>(context);
+
     return Container(
       color: Color(0xFF141E1D),
       child: Container(
@@ -36,8 +36,8 @@ class AddTasksScreen extends StatelessWidget {
               ),
               autofocus: true,
               textAlign: TextAlign.center,
-              onChanged: (newTask) {
-                taskTitle = newTask;
+              onChanged: (newText) {
+                newTaskTitle = newText;
               },
             ),
             FlatButton(
@@ -45,7 +45,8 @@ class AddTasksScreen extends StatelessWidget {
               textColor: Color(0xFF1A3532),
               child: Text('Add'),
               onPressed: (){
-                onPressed(taskTitle);
+                taskStore.addTask(newTaskTitle);
+                Navigator.pop(context);
               },
             )
           ],
